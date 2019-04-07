@@ -2,12 +2,13 @@ package com.fun.graphing.service;
 
 import com.fun.graphing.domain.Node;
 
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public interface NodeService {
-	public abstract void createNodes(Pane drawingPane, double xCoord, double yCoord);
-	public abstract void deleteNode(Pane drawingPane, Node node);
+	public abstract Node createNode(Pane drawingPane, MouseEvent mouseEvent);
+	public abstract Node deleteNode(Pane drawingPane, MouseEvent mouseEvent);
 	
-	public abstract void connectNodes(Pane drawingPane, Node node);
+	public abstract Node connectNodes(Pane drawingPane, MouseEvent mouseEvent);
 	
 }

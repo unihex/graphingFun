@@ -2,22 +2,27 @@ package com.fun.graphing.service;
 
 import com.fun.graphing.domain.Node;
 
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class NodeServiceImpl implements NodeService {
 	
-	public void createNodes(Pane drawingPane, double xCoord, double yCoord) {
-		// TODO Auto-generated method stub
+	public Node createNode(Pane drawingPane, MouseEvent mouseEvent) {
+		double xCoord = mouseEvent.getSceneX();
+		double yCoord = mouseEvent.getSceneY();
+		
+		Node node = new Node(xCoord, yCoord);
+		drawingPane.getChildren().add(node);
+		
+		return node;
+	}
+
+	public Node deleteNode(Pane drawingPane, MouseEvent mouseEvent) {
+		return null;
 		
 	}
 
-	public void deleteNode(Pane drawingPane, Node node) {
-		// TODO Auto-generated method stub
-		
+	public Node connectNodes(Pane drawingPane, MouseEvent mouseEvent) {
+		return null;
 	}
-
-	public void connectNodes(Pane drawingPane, Node node) {
-		// TODO Auto-generated method stub
-		
-	}	
 }

@@ -1,8 +1,6 @@
 package com.fun.graphing;
 
 import com.fun.graphing.controller.NodeController;
-import com.fun.graphing.service.NodeService;
-import com.fun.graphing.service.NodeServiceImpl;
 import com.fun.graphing.view.NodeGraphView;
 
 import javafx.application.Application;
@@ -26,8 +24,7 @@ public class GraphingApplication extends Application {
 	}
 	
 	private Scene setupNodeGraphingApplication() {
-		NodeService service = new NodeServiceImpl();
-		NodeController controller = new NodeController(service);
+		NodeController controller = new NodeController();
 		NodeGraphView view = new NodeGraphView(controller);
 		
 		Scene root = view.buildView();

@@ -28,8 +28,11 @@ public class NodeGraphView {
 		Pane drawingPane = this.buildDrawingPane(vBoxLayout.heightProperty(), vBoxLayout.widthProperty());
 		HBox buttonBox = this.buildButtonBox();
 		
+		nodeController.setDrawingPane(drawingPane);
+		
 		vBoxLayout.getChildren().addAll(drawingPane, buttonBox);
 		Scene scene = new Scene(vBoxLayout, 900, 900);
+		
 		return scene;
 	}
 	
@@ -44,6 +47,7 @@ public class NodeGraphView {
 		Background background = new Background(bgFill);
 		
 		pane.setBackground(background);
+		pane.setOnMouseClicked(nodeController.new HandlePaneMouseClick());
 		
 		return pane;
 	}
@@ -54,10 +58,13 @@ public class NodeGraphView {
 		hBox.setSpacing(100);
 		
 		Button createNodesButton = new Button("Create Nodes");
+		createNodesButton.setOnAction(nodeController.new EnableNodeCreation());
 		
 		Button deleteNodesButton = new Button("Delete Nodes");
+		deleteNodesButton.setOnAction(nodeController.new EnableNodeDeletion());
 		
 		Button connectNodesButton = new Button("Connect Nodes");
+		connectNodesButton.setOnAction(nodeController.new EnableNodeConnection());
 		
 		Button traverseNodesButton = new Button("Traverse Nodes");
 		
