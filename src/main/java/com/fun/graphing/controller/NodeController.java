@@ -9,7 +9,6 @@ import com.fun.graphing.enums.PaneState;
 import com.fun.graphing.service.StateToServiceMap;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
@@ -27,59 +26,38 @@ public class NodeController {
 		this.drawingPane = drawingPane;
 	}
 	
-	public class EnableNodeCreation implements EventHandler<ActionEvent> {
-
-		@Override
-		public void handle(ActionEvent event) {
-			nodeState = null;
-			paneState = PaneState.CREATION;
+	public void enableNodeCreation(ActionEvent actionEvent) {
+		nodeState = null;
+		paneState = PaneState.CREATION;
+	}
+	
+	public void enableNodeDeletion(ActionEvent actionEvent) {
+		nodeState = NodeState.DELETION;
+		paneState = null;
+	}
+	
+	public void enableNodeConnection(ActionEvent actionEvent) {
+		nodeState = NodeState.CONNECTION;
+		paneState = null;
+	}
+	
+	public void handlePaneMouseClick(MouseEvent mouseEvent) {
+		BiFunction<Pane, MouseEvent, Node> serviceFunction = PANE_STATE_TO_SERVICE_MAP.get(paneState);
+		
+		if (serviceFunction == null) {
+			return;
 		}
 		
+		serviceFunction.apply(drawingPane, mouseEvent);
 	}
 	
-	public class EnableNodeDeletion implements EventHandler<ActionEvent> {
-
-		@Override
-		public void handle(ActionEvent event) {
-			nodeState = NodeState.DELETION;
-			paneState = null;
+	public void handleNodeMouseClick(MouseEvent mouseEvent) {
+		BiFunction<Pane, MouseEvent, Node> serviceFunction = NODE_STATE_TO_SERVICE_MAP.get(nodeState);
+		
+		if (serviceFunction == null) {
+			return;
 		}
-	}
-	
-	public class EnableNodeConnection implements EventHandler<ActionEvent> {
-
-		@Override
-		public void handle(ActionEvent event) {
-			nodeState = NodeState.CONNECTION;
-			paneState = null;
-		}
-	}
-	
-	public class HandlePaneMouseClick implements EventHandler<MouseEvent> {
-
-		@Override
-		public void handle(MouseEvent event) {
-			BiFunction<Pane, MouseEvent, Node> serviceFunction = PANE_STATE_TO_SERVICE_MAP.get(paneState);
-			
-			if (serviceFunction == null) {
-				return;
-			}
-			
-			serviceFunction.apply(drawingPane, event);
-		}
-	}
-	
-	public class HandleNodeMouseClick implements EventHandler<MouseEvent> {
-
-		@Override
-		public void handle(MouseEvent event) {
-			BiFunction<Pane, MouseEvent, Node> serviceFunction = NODE_STATE_TO_SERVICE_MAP.get(nodeState);
-			
-			if (serviceFunction == null) {
-				return;
-			}
-			
-			serviceFunction.apply(drawingPane, event);
-		}
+		
+		serviceFunction.apply(drawingPane, mouseEvent);	
 	}
 }

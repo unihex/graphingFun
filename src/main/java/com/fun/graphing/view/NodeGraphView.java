@@ -47,7 +47,7 @@ public class NodeGraphView {
 		Background background = new Background(bgFill);
 		
 		pane.setBackground(background);
-		pane.setOnMouseClicked(nodeController.new HandlePaneMouseClick());
+		pane.setOnMouseClicked(nodeController::handlePaneMouseClick);
 		
 		return pane;
 	}
@@ -58,13 +58,13 @@ public class NodeGraphView {
 		hBox.setSpacing(100);
 		
 		Button createNodesButton = new Button("Create Nodes");
-		createNodesButton.setOnAction(nodeController.new EnableNodeCreation());
+		createNodesButton.setOnAction(nodeController::enableNodeCreation);
 		
 		Button deleteNodesButton = new Button("Delete Nodes");
-		deleteNodesButton.setOnAction(nodeController.new EnableNodeDeletion());
+		deleteNodesButton.setOnAction(nodeController::enableNodeDeletion);
 		
 		Button connectNodesButton = new Button("Connect Nodes");
-		connectNodesButton.setOnAction(nodeController.new EnableNodeConnection());
+		connectNodesButton.setOnAction(nodeController::enableNodeConnection);
 		
 		Button traverseNodesButton = new Button("Traverse Nodes");
 		
