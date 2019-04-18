@@ -1,6 +1,9 @@
 package com.fun.graphing.view;
 
 import com.fun.graphing.controller.NodeController;
+import com.fun.graphing.domain.Node;
+import com.fun.graphing.enums.NodeState;
+import com.fun.graphing.enums.PaneState;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.geometry.Pos;
@@ -14,21 +17,26 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class NodeGraphView {
+	
 	private NodeController nodeController;
 	
 	private final static Color BACKGROUND_COLOR = Color.web("#f4aa42");
 	
+	private Pane drawingPane;
+	
+	private NodeState nodeState;
+	private PaneState paneState;
+	
 	public NodeGraphView(NodeController nodeController) {
 		this.nodeController = nodeController;
+		this.nodeController.setView(this);
 	}
 	
 	public Scene buildView() {
 		VBox vBoxLayout = new VBox();
 		
-		Pane drawingPane = this.buildDrawingPane(vBoxLayout.heightProperty(), vBoxLayout.widthProperty());
+		drawingPane = this.buildDrawingPane(vBoxLayout.heightProperty(), vBoxLayout.widthProperty());
 		HBox buttonBox = this.buildButtonBox();
-		
-		nodeController.setDrawingPane(drawingPane);
 		
 		vBoxLayout.getChildren().addAll(drawingPane, buttonBox);
 		Scene scene = new Scene(vBoxLayout, 900, 900);
@@ -36,7 +44,26 @@ public class NodeGraphView {
 		return scene;
 	}
 	
+	public void addNodeToView(Node node) {
+		drawingPane.getChildren().add(node);
+	}
 	
+	public NodeState getNodeState() {
+		return nodeState;
+	}
+
+	public void setNodeState(NodeState nodeState) {
+		this.nodeState = nodeState;
+	}
+
+	public PaneState getPaneState() {
+		return paneState;
+	}
+
+	public void setPaneState(PaneState paneState) {
+		this.paneState = paneState;
+	}
+
 	private Pane buildDrawingPane(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width) {
 		Pane pane = new Pane();
 		

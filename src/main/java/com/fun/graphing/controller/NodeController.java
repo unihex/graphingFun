@@ -1,63 +1,57 @@
 package com.fun.graphing.controller;
 
-import java.util.Map;
-import java.util.function.BiFunction;
-
 import com.fun.graphing.domain.Node;
 import com.fun.graphing.enums.NodeState;
 import com.fun.graphing.enums.PaneState;
-import com.fun.graphing.service.StateToServiceMap;
+import com.fun.graphing.service.NodeService;
+import com.fun.graphing.view.NodeGraphView;
 
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 
 public class NodeController {
-	private Pane drawingPane;
 	
-	private NodeState nodeState;
-	private PaneState paneState;
+	private NodeService nodeService;
 	
-	private static final Map<NodeState, BiFunction<Pane, MouseEvent, Node>> NODE_STATE_TO_SERVICE_MAP = StateToServiceMap.getNodeStateToServiceMap();
-	private static final Map<PaneState, BiFunction<Pane, MouseEvent, Node>> PANE_STATE_TO_SERVICE_MAP = StateToServiceMap.getPaneStateToServiceMap();
+	private NodeGraphView view;
 	
-	
-	public void setDrawingPane(Pane drawingPane) {
-		this.drawingPane = drawingPane;
+	public NodeController(NodeService nodeService) {
+		this.nodeService = nodeService;
+		this.nodeService.setNodeController(this);	
+	}
+
+	public void setView(NodeGraphView view) {
+		this.view = view;
 	}
 	
 	public void enableNodeCreation(ActionEvent actionEvent) {
-		nodeState = null;
-		paneState = PaneState.CREATION;
+		view.setPaneState(PaneState.CREATION);
+		view.setNodeState(null);
 	}
 	
 	public void enableNodeDeletion(ActionEvent actionEvent) {
-		nodeState = NodeState.DELETION;
-		paneState = null;
+		view.setPaneState(null);
+		view.setNodeState(NodeState.DELETION);
 	}
 	
 	public void enableNodeConnection(ActionEvent actionEvent) {
-		nodeState = NodeState.CONNECTION;
-		paneState = null;
+		view.setPaneState(null);
+		view.setNodeState(NodeState.CONNECTION);
+	}
+	
+	public void tellViewToAddNode(Node node) {
+		view.addNodeToView(node);
 	}
 	
 	public void handlePaneMouseClick(MouseEvent mouseEvent) {
-		BiFunction<Pane, MouseEvent, Node> serviceFunction = PANE_STATE_TO_SERVICE_MAP.get(paneState);
+		PaneState paneState = view.getPaneState();
 		
-		if (serviceFunction == null) {
-			return;
-		}
-		
-		serviceFunction.apply(drawingPane, mouseEvent);
+		nodeService.executePaneStateMethod(paneState, mouseEvent);
 	}
 	
 	public void handleNodeMouseClick(MouseEvent mouseEvent) {
-		BiFunction<Pane, MouseEvent, Node> serviceFunction = NODE_STATE_TO_SERVICE_MAP.get(nodeState);
+		NodeState nodeState = view.getNodeState();
 		
-		if (serviceFunction == null) {
-			return;
-		}
-		
-		serviceFunction.apply(drawingPane, mouseEvent);	
+		nodeService.executeNodeStateMethod(nodeState, mouseEvent);
 	}
 }

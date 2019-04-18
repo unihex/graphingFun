@@ -1,6 +1,8 @@
 package com.fun.graphing;
 
 import com.fun.graphing.controller.NodeController;
+import com.fun.graphing.service.NodeService;
+import com.fun.graphing.service.NodeServiceImpl;
 import com.fun.graphing.view.NodeGraphView;
 
 import javafx.application.Application;
@@ -10,8 +12,7 @@ import javafx.stage.Stage;
 public class GraphingApplication extends Application {
 	
 	public static void main(String[] args) {
-		launch(args);
-		
+		launch(args);	
 	}
 
 	@Override
@@ -24,12 +25,12 @@ public class GraphingApplication extends Application {
 	}
 	
 	private Scene setupNodeGraphingApplication() {
-		NodeController controller = new NodeController();
+		NodeService service = new NodeServiceImpl();
+		NodeController controller = new NodeController(service);
 		NodeGraphView view = new NodeGraphView(controller);
 		
 		Scene root = view.buildView();
 		
 		return root;
 	}
-	
 }
