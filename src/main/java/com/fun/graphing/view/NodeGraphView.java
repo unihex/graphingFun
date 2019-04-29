@@ -48,6 +48,10 @@ public class NodeGraphView {
 		drawingPane.getChildren().add(node);
 	}
 	
+	public void removeElementFromView(Object element) {
+		drawingPane.getChildren().remove(element);
+	}
+	
 	public NodeState getNodeState() {
 		return nodeState;
 	}

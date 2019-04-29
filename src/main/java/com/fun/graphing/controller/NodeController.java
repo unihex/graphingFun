@@ -43,6 +43,10 @@ public class NodeController {
 		view.addNodeToView(node);
 	}
 	
+	public void tellViewToRemoveElement(Object element) {
+		view.removeElementFromView(element);
+	}
+	
 	public void handlePaneMouseClick(MouseEvent mouseEvent) {
 		PaneState paneState = view.getPaneState();
 		

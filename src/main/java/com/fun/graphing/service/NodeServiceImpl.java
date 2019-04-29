@@ -35,12 +35,14 @@ public class NodeServiceImpl implements NodeService {
 		
 		Node node = new Node(xCoord, yCoord);
 		
+		node.setOnMouseClicked(nodeController::handleNodeMouseClick);
 		nodeController.tellViewToAddNode(node);
 	}
 
 	@Override
 	public void deleteNode(MouseEvent mouseEvent) {
-		return;
+		Node node = (Node) mouseEvent.getSource();
+		nodeController.tellViewToRemoveElement(node);
 	}
 
 	@Override
