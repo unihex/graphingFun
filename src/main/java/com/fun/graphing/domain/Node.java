@@ -1,5 +1,8 @@
 package com.fun.graphing.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
 import javafx.scene.layout.StackPane;
@@ -16,15 +19,35 @@ public class Node extends StackPane {
 	private Circle circle;
 	private Text label;
 	
+	private Map<Node, Edge> neighborMap;
 	
-	public Node(double xCoord, double yCoord) {
-		circle = new Circle(NODE_RADIUS, Color.CYAN);
+	public Node(double centerX, double centerY) {
+		neighborMap = new HashMap<>();
+		
+		circle = new Circle(centerX, centerY, NODE_RADIUS, Color.CYAN);
 		
 		label = new Text(this.createNodeLabel());
 		
 		this.getChildren().addAll(circle, label);
-		this.relocate(xCoord - NODE_RADIUS, yCoord - NODE_RADIUS);
 		
+		//The starting point for a stackpane is the upper left
+		this.relocate(centerX - NODE_RADIUS, centerY - NODE_RADIUS);
+	}
+	
+	public double getCenterX() {
+		return this.circle.getCenterX();
+	}
+	
+	public double getCenterY() {
+		return this.circle.getCenterY();
+	}
+	
+	public void addNeighbor(Node node, Edge edge) {
+		this.neighborMap.put(node, edge);
+	}
+	
+	public boolean isNeighbor(Node node) {
+		return this.neighborMap.containsKey(node);
 	}
 	
 	private String createNodeLabel() {

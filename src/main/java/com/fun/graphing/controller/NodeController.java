@@ -1,6 +1,5 @@
 package com.fun.graphing.controller;
 
-import com.fun.graphing.domain.Node;
 import com.fun.graphing.enums.NodeState;
 import com.fun.graphing.enums.PaneState;
 import com.fun.graphing.service.NodeService;
@@ -39,8 +38,8 @@ public class NodeController {
 		view.setNodeState(NodeState.CONNECTION);
 	}
 	
-	public void tellViewToAddNode(Node node) {
-		view.addNodeToView(node);
+	public void tellViewToAddElement(javafx.scene.Node element) {
+		view.addElementToView(element);
 	}
 	
 	public void tellViewToRemoveElement(Object element) {

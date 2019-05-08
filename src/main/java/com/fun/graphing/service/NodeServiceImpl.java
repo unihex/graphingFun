@@ -1,10 +1,14 @@
 package com.fun.graphing.service;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import com.fun.graphing.controller.NodeController;
+import com.fun.graphing.domain.Edge;
 import com.fun.graphing.domain.Node;
 import com.fun.graphing.enums.NodeState;
 import com.fun.graphing.enums.PaneState;
@@ -18,9 +22,13 @@ public class NodeServiceImpl implements NodeService {
 	private Map<PaneState, Consumer<MouseEvent>> paneStateMap;
 	private Map<NodeState, Consumer<MouseEvent>> nodeStateMap;
 	
+	private Set<Node> nodesToConnect;
+	
 	public NodeServiceImpl() {
 		this.paneStateMap = this.buildPaneStateMap();
 		this.nodeStateMap = this.buildNodeStateMap();
+		
+		nodesToConnect = new HashSet<>();
 	}
 	
 	@Override
@@ -36,7 +44,7 @@ public class NodeServiceImpl implements NodeService {
 		Node node = new Node(xCoord, yCoord);
 		
 		node.setOnMouseClicked(nodeController::handleNodeMouseClick);
-		nodeController.tellViewToAddNode(node);
+		nodeController.tellViewToAddElement(node);
 	}
 
 	@Override
@@ -47,7 +55,34 @@ public class NodeServiceImpl implements NodeService {
 
 	@Override
 	public void connectNodes(MouseEvent mouseEvent) {
-		return;
+		Node node = (Node) mouseEvent.getSource();
+		
+		nodesToConnect.add(node);
+		
+		if (nodesToConnect.size() < 2) {
+			return;
+		}
+		
+		Iterator<Node> connectionIterator = nodesToConnect.iterator();
+		Node currentNode = connectionIterator.next();
+		
+		while (connectionIterator.hasNext()) {
+			Node nextNode = connectionIterator.next();
+			
+			if (currentNode.isNeighbor(nextNode)) {
+				continue;
+			}
+			
+			Edge edge = new Edge(currentNode, nextNode);
+			currentNode.addNeighbor(nextNode, edge);
+			nextNode.addNeighbor(currentNode, edge);
+			
+			nodeController.tellViewToAddElement(edge);
+			
+			currentNode = nextNode;
+		}
+		
+		nodesToConnect.clear();
 	}
 	
 	//Extreme functional programming below!!
