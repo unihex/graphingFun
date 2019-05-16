@@ -1,9 +1,11 @@
 package com.fun.graphing.service;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -50,6 +52,18 @@ public class NodeServiceImpl implements NodeService {
 	@Override
 	public void deleteNode(MouseEvent mouseEvent) {
 		Node node = (Node) mouseEvent.getSource();
+		nodesToConnect.remove(node);
+		
+		Collection<Edge> edgeCollection = node.getEdges();
+		
+		for (Edge edge : edgeCollection) {
+			Optional<Node> remainingNodeOption = edge.getOtherNode(node);
+			
+			remainingNodeOption.ifPresent(n -> n.removeNeighbor(node));
+			
+			nodeController.tellViewToRemoveElement(edge);
+		}
+		
 		nodeController.tellViewToRemoveElement(node);
 	}
 

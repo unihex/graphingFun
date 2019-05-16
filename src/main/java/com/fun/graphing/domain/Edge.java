@@ -1,5 +1,7 @@
 package com.fun.graphing.domain;
 
+import java.util.Optional;
+
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Line;
 
@@ -30,6 +32,18 @@ public class Edge extends Line {
 		
 		this.node1 = node1;
 		this.node2 = node2;
+	}
+	
+	public Optional<Node> getOtherNode(Node node) {
+		if (node.equals(this.node1)) {
+			return Optional.of(this.node2);
+			
+		} else if (node.equals(this.node2)) {
+			return Optional.of(this.node1);
+		}
+		
+		
+		return Optional.empty();
 	}
 	
 }

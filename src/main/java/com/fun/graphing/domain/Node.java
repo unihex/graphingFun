@@ -1,5 +1,6 @@
 package com.fun.graphing.domain;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,8 +47,16 @@ public class Node extends StackPane {
 		this.neighborMap.put(node, edge);
 	}
 	
+	public void removeNeighbor(Node node) {
+		this.neighborMap.remove(node);
+	}
+	
 	public boolean isNeighbor(Node node) {
 		return this.neighborMap.containsKey(node);
+	}
+	
+	public Collection<Edge> getEdges() {
+		return this.neighborMap.values();
 	}
 	
 	private String createNodeLabel() {
