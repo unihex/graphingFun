@@ -24,16 +24,22 @@ public class NodeController {
 	}
 	
 	public void enableNodeCreation(ActionEvent actionEvent) {
+		view.setInstructionsText("Create a node by clicking above the buttons");
+		
 		view.setPaneState(PaneState.CREATION);
 		view.setNodeState(null);
 	}
 	
 	public void enableNodeDeletion(ActionEvent actionEvent) {
+		view.setInstructionsText("Delete a node by clicking on the node");
+		
 		view.setPaneState(null);
 		view.setNodeState(NodeState.DELETION);
 	}
 	
 	public void enableNodeConnection(ActionEvent actionEvent) {
+		view.setInstructionsText("Connect two nodes by clicking on them");
+		
 		view.setPaneState(null);
 		view.setNodeState(NodeState.CONNECTION);
 	}

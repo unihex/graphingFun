@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public class NodeGraphView {
 	
@@ -22,6 +23,7 @@ public class NodeGraphView {
 	private final static Color BACKGROUND_COLOR = Color.web("#f4aa42");
 	
 	private Pane drawingPane;
+	private Text instructions;
 	
 	private NodeState nodeState;
 	private PaneState paneState;
@@ -33,11 +35,15 @@ public class NodeGraphView {
 	
 	public Scene buildView() {
 		VBox vBoxLayout = new VBox();
+		vBoxLayout.setAlignment(Pos.BOTTOM_CENTER);
 		
 		drawingPane = this.buildDrawingPane(vBoxLayout.heightProperty(), vBoxLayout.widthProperty());
 		HBox buttonBox = this.buildButtonBox();
 		
-		vBoxLayout.getChildren().addAll(drawingPane, buttonBox);
+		instructions = new Text();
+		instructions.setFill(Color.RED);
+		
+		vBoxLayout.getChildren().addAll(drawingPane, buttonBox, instructions);
 		Scene scene = new Scene(vBoxLayout, 900, 900);
 		
 		return scene;
@@ -49,6 +55,10 @@ public class NodeGraphView {
 	
 	public void removeElementFromView(Object element) {
 		drawingPane.getChildren().remove(element);
+	}
+	
+	public void setInstructionsText(String text) {
+		instructions.setText(text);
 	}
 	
 	public NodeState getNodeState() {
